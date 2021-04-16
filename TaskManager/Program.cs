@@ -5,9 +5,9 @@ using TaskManager.Business.Model;
 
 namespace TaskManager
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hi, this is task manager!");
             Console.WriteLine("Max limit : ");
@@ -22,17 +22,17 @@ namespace TaskManager
             {
                 case "F":
                 {
-                    taskManager = new Business.Model.FiFoTaskManager(limit);
+                    taskManager = new FiFoTaskManager(limit);
                     break;
                 }
                 case "P":
                 {
-                    taskManager = new Business.Model.PriorityTaskManager(limit);
+                    taskManager = new PriorityTaskManager(limit);
                     break;
                 }
                 default:
                 {
-                    taskManager = new Business.Model.TaskManager(limit);
+                    taskManager = new Business.TaskManager(limit);
                     break;
                 }
             }
@@ -40,25 +40,29 @@ namespace TaskManager
 
             Console.WriteLine("Press A to add / L to List / E to Exit");
             var command = Console.ReadLine();
-            
+
             while (command != "E")
             {
                 if (command == "A")
                 {
-                    var newProcess = new Process() {PID = Guid.NewGuid(), Priority = Priority.Low};
+                    var newProcess = new Process(Guid.NewGuid(), Priority.Low);
+
+
                     var isAdded = taskManager.Add(newProcess);
-                    Console.WriteLine(isAdded ? $"New Task added with PID  {newProcess.PID} - {newProcess.Priority} - Creation:{newProcess.CreateDate}" : $"Task can't be added.");
+                    Console.WriteLine(isAdded
+                        ? $"New Task added with PID  {newProcess.PID} - {newProcess.Priority} - Creation:{newProcess.CreateDate}"
+                        : $"Task can't be added.");
                 }
                 else if (command == "L")
                 {
                     var processList = taskManager.List();
-                    int i = 1;
+                    var i = 1;
                     processList.ToList().ForEach(k => Console.WriteLine($"{i++}-{k.PID}"));
                 }
                 else if (command == "K")
                 {
                     var processList = taskManager.List();
-                    int i = 1;
+                    var i = 1;
                     processList.ToList().ForEach(k => Console.WriteLine($"{i++}-{k.PID}"));
                 }
                 else

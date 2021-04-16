@@ -11,5 +11,4 @@ namespace TaskManager.Business
         public IList<Process> List();
         public bool Kill(Process process);
     }
-    
 }

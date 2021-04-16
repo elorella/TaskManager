@@ -6,21 +6,20 @@ namespace TaskManager.Business.Model
 {
     public class Process
     {
-        public Guid PID { get; set; }
-        public Priority Priority { get; set; }
+        public Guid PID { get; }
+        public Priority Priority { get; }
         public DateTime CreateDate => DateTime.Now;
 
-        public bool Kill()
+        public Process(Guid pid, Priority priority)
+        {
+            PID = pid;
+            Priority = priority;
+        }
+
+        internal bool Kill()
         {
             Console.WriteLine($"I'm dead! {PID} - {Priority} - Creation:{CreateDate}");
-            return false;
+            return true;
         }
-    }
-
-    public enum Priority
-    {
-       Low = 1,
-       Medium =3,
-       High = 3
     }
 }
