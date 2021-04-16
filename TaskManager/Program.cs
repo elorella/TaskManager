@@ -38,7 +38,7 @@ namespace TaskManager
             }
 
 
-            Console.WriteLine("Press A to add / L to List / E to Exit");
+            Console.WriteLine("Press A to add / L to List/ / K to Kill / E to Exit");
             var command = Console.ReadLine();
 
             while (command != "E")
@@ -61,16 +61,26 @@ namespace TaskManager
                 }
                 else if (command == "K")
                 {
-                    var processList = taskManager.List();
+                    var processList = taskManager.List().ToList();
                     var i = 1;
-                    processList.ToList().ForEach(k => Console.WriteLine($"{i++}-{k.PID}"));
+                    processList.ForEach(k => Console.WriteLine($"Press {i++} to delete {k.PID}"));
+
+                    var indexToDelete = Console.ReadLine();
+                    if (int.TryParse(indexToDelete, out int index))
+                    {
+                        bool killed = taskManager.Kill(processList[index-1]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Process not found.");
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Wrong command.");
                 }
 
-                Console.WriteLine("Press A to add/ L To List/ E to Exit");
+                Console.WriteLine("Press A to add / L to List/ / K to Kill / E to Exit");
                 command = Console.ReadLine();
             }
 

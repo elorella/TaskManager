@@ -18,7 +18,7 @@ namespace UnitTest
             var isAdded = taskManager.Add(new Process(Guid.NewGuid(), Priority.Low));
             Assert.IsTrue(isAdded);
 
-            var itemCount = taskManager.List().Count;
+            var itemCount = taskManager.List().ToList().Count;
             Assert.AreEqual(2, itemCount);
         }
 

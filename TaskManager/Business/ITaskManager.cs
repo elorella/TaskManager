@@ -8,7 +8,7 @@ namespace TaskManager.Business
     public interface ITaskManager
     {
         public bool Add(Process process);
-        public IList<Process> List();
+        public IEnumerable<Process> List();
         public bool Kill(Process process);
     }
 }

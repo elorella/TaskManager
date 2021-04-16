@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TaskManager.Business.Model;
 
 namespace TaskManager.Business
@@ -23,9 +24,9 @@ namespace TaskManager.Business
             return true;
         }
 
-        public IList<Process> List()
+        public IEnumerable<Process> List()
         {
-            return ProcessList;
+            return ProcessList.OrderBy(m=>m.CreateDate);
         }
 
         public bool Kill(Process process)
