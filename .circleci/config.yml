@@ -4,9 +4,42 @@
   win: circleci/windows@2.2.0
 
  jobs:
+   test:
+     description: Setup and run application tests
+     executor:
+       name: windows/default
+     steps:
+       - checkout
+       - restore_cache:
+           keys:
+             - dotnet-packages-v1-{{ checksum "TaskManager/TaskManager.csproj" }}
+       - run:
+           name: "Install project dependencies"
+           command: dotnet.exe restore
+       - save_cache:
+           paths:
+             - C:\Users\circleci\.nuget\packages
+           key: dotnet-packages-v1-{{ checksum "TaskManager/TaskManager.csproj" }}
+       - run:
+           name: "Run Application Tests"
+           command: dotnet.exe test -v n --results-directory:test_coverage --collect:"Code Coverage"
+       - run:
+           name: "Print Working Directory"
+           command: pwd
+       - store_artifacts:
+           path: C:\Users\circleci\project\test_coverage
+ 
    build:
      executor: win/default     
     
      steps:
        - checkout
        - run: dotnet build
+
+ workflows:
+  test_and_build:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
