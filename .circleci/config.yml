@@ -18,7 +18,7 @@
            command: dotnet.exe restore
        - save_cache:
            paths:
-             - C:\Users\circleci\.nuget\packages
+             - .nuget\packages
            key: dotnet-packages-v1-{{ checksum "TaskManager/TaskManager.csproj" }}
        - run:
            name: "Run Application Tests"
@@ -27,7 +27,7 @@
            name: "Print Working Directory"
            command: pwd
        - store_artifacts:
-           path: C:\Users\circleci\project\test_coverage
+           path: TaskManager/TaskManager.UnitTests/test_coverage
  
    build:
      executor: win/default     
