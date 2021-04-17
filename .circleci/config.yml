@@ -36,6 +36,8 @@
       - run:
           name: "Build Application according to some given configuration"
           command: dotnet.exe build --configuration Release
+      - store_artifacts:
+                path: C:\Users\circleci\project\bin\final_build
  workflows:
   test_and_build:
     jobs:
