@@ -1,15 +1,15 @@
 ﻿using System.Linq;
-using TaskManager.Business.Model;
+using TaskManager.Entity;
 
-namespace TaskManager.Business
+namespace TaskManager
 {
     public class PriorityTaskManager : BaseTaskManager
     {
-        public PriorityTaskManager(int count) : base(count)
+        internal PriorityTaskManager(int count) : base(count)
         {
         }
 
-        public override bool CanAddBeAdded(Process process)
+        public override bool CanBeAdded(Process process)
         {
             //if the new process passed in the add() call has a higher priority compared to any of the
             //existing one, we remove the lowest priority that is the oldest, otherwise we skip it
@@ -18,7 +18,7 @@ namespace TaskManager.Business
                 .FirstOrDefault(m => m.Priority < process.Priority);
             if (lowerPriority != null)
             {
-                Kill(lowerPriority);
+                Kill(lowerPriority.PID);
                 return true;
             }
 

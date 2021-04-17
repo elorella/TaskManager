@@ -1,9 +1,9 @@
-﻿namespace TaskManager.Business.Model
+﻿namespace TaskManager.Entity
 {
     public enum Priority
     {
         Low = 1,
-        Medium = 3,
+        Medium = 2,
         High = 3
     }
 }
