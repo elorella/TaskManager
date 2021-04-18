@@ -42,7 +42,8 @@
           name: Compress Artifacts
           command: tar -cvzf TaskManager.tar C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64
       - store_artifacts:
-          path: C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64
+          path: TaskManager.tar
+          destination: TaskManager
  workflows:
   test_and_build:
     jobs:
