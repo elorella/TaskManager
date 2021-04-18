@@ -35,9 +35,14 @@
       - checkout
       - run:
           name: "Build Application according to some given configuration"
-          command: dotnet.exe build --configuration Release
+          #command: dotnet.exe build --configuration Release
+          command: dotnet.exe publish -c Release -r win10-x64
+      - run:
+          name: "Test UI.exe"
+          #command: dotnet.exe build --configuration Release
+          command: .\bin\Release\netcoreapp2.1\win10-x64\publish\TaskManagerUI.exe
       - store_artifacts:
-                path: C:\Users\circleci\project\TaskManager\bin\Release\netcoreapp3.1
+                path: .\bin\Release\netcoreapp2.1\win10-x64\publish\TaskManagerUI.exe
  workflows:
   test_and_build:
     jobs:
