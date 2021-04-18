@@ -40,9 +40,9 @@
           command: dotnet.exe publish -c Release
       - run:
           name: Compress Artifacts
-          command: tar -cvzf TaskManager.tar.xz C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\publish
+          command: tar -cvzf TaskManager.tar.xz TaskManager.UI\bin\Release\netcoreapp3.1\publish
       - store_artifacts:
-          path: TaskManager.tar.xz
+          path: TaskManager.UI\bin\Release\netcoreapp3.1\publish
           #destination: TaskManager
  workflows:
   test_and_build:
