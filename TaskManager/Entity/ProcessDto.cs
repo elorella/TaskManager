@@ -8,6 +8,7 @@ namespace TaskManager.Entity
         {
             Priority = priority;
         }
+
         internal ProcessDto(int pId, Priority priority, DateTime createDate)
         {
             Priority = priority;
@@ -15,11 +16,12 @@ namespace TaskManager.Entity
             PID = pId;
         }
 
-        public int PID { get;  }
+        public int PID { get; }
         public Priority Priority { get; }
         public DateTime CreateDate { get; set; }
-
-        
+        public override string ToString()
+        {
+            return $"PID:{PID} Priority:{Priority} Create Date:{CreateDate}";
+        }
     }
-
 }

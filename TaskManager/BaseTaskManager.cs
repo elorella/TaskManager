@@ -8,21 +8,22 @@ namespace TaskManager
     public abstract class BaseTaskManager : ITaskManager
     {
         private static int _newTaskId = 1;
-
-        protected readonly List<Process> ProcessList; 
-        //protected readonly Queue<Process> ProcessList
+        protected readonly List<Process> ProcessList;
 
         protected BaseTaskManager(int count)
         {
             ProcessList = new List<Process>(count);
         }
 
+        /// <summary>
+        ///  Adds a new process to task-list
+        /// </summary>
         public ProcessDto Add(ProcessDto processDto)
         {
             var process = new Process(processDto.Priority, _newTaskId);
 
             if (ProcessList.Count == ProcessList.Capacity)
-                if (!CanBeAdded(process))
+                if (!TryAddOverflow(process))
                     return null;
 
             ProcessList.Add(process);
@@ -32,7 +33,7 @@ namespace TaskManager
         }
 
         /// <summary>
-        ///     List of running process ordered by Creation Date
+        ///     List of running process
         /// </summary>
         public IEnumerable<ProcessDto> List()
         {
@@ -40,12 +41,19 @@ namespace TaskManager
                 ProcessList.Select(MapToDto);
         }
 
+        /// <summary>
+        ///     List of running process order by properties
+        /// </summary>
         public IEnumerable<ProcessDto> List<TKey>(Func<ProcessDto, TKey> keySelector)
         {
             var ordered = List().OrderBy(keySelector);
             return ordered;
         }
 
+
+        /// <summary>
+        ///     Remove a task with the given Id from task manager
+        /// </summary>
         public bool Kill(int processId)
         {
             var processToKill = GetById(processId);
@@ -56,6 +64,9 @@ namespace TaskManager
             return killed && ProcessList.Remove(processToKill);
         }
 
+        /// <summary>
+        ///     Remove task(s) with the given priority from task manager
+        /// </summary>
         public bool KillByPriority(Priority priority)
         {
             var priorityList = GetByPriority(priority).ToList();
@@ -63,28 +74,33 @@ namespace TaskManager
             return true;
         }
 
+        /// <summary>
+        ///  Remove tasks from task manager. Failure cases are ignored. 
+        /// </summary>
         public bool KillAll()
         {
-            ProcessList.ForEach(m => Kill(m.PID));
+            ProcessList.ToList().ForEach(m => Kill(m.PID));
             return true;
         }
 
-        public abstract bool CanBeAdded(Process process);
+        public abstract bool TryAddOverflow(Process process);
 
-        private Process GetById(int pid) // REPO 
+        // Can ben moved to a repository 
+        private Process GetById(int pid) 
         {
             return ProcessList.FirstOrDefault(m => m.PID == pid);
         }
 
-        private IEnumerable<Process> GetByPriority(Priority priority) // REPO 
+        // Can ben moved to a repository 
+        private IEnumerable<Process> GetByPriority(Priority priority) 
         {
             return ProcessList.Where(m => m.Priority == priority);
         }
 
+        // Can ben moved to a mapper 
         private ProcessDto MapToDto(Process process) // Mapper 
         {
             return new ProcessDto(process.PID, process.Priority, process.CreateDate);
         }
-
     }
 }

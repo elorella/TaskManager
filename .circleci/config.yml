@@ -37,7 +37,7 @@
       - run:
           name: "Build Application according to some given configuration"
           #command: dotnet.exe build --configuration Release
-          command: dotnet.exe publish -c Release -r win10-x64
+          command: dotnet.exe publish -c Release -r win-x64
       - run: 
           name: "Create Artifact folder"
           command :  New-Item -force -Path  "C:\Users\circleci\project\TaskManager" -Name "Artifact" -ItemType "directory"

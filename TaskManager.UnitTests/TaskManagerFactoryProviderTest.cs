@@ -26,9 +26,7 @@ namespace TaskManager.UnitTests
         public void FactoryShouldCreateTaskManagersWithTheGivenSize(int size)
         {
             var taskManager = TaskManagerFactory.CreateTaskManager(taskManagerSize: size);
-
-            for (var i = 0; i < size; i++) taskManager.Add(new ProcessDto(Priority.Low));
-
+            for (var i = 0; i < size; i++) {taskManager.Add(new ProcessDto(Priority.Low));}
             var isAdded = taskManager.Add(new ProcessDto(Priority.Low));
             Assert.Null(isAdded);
         }
@@ -38,7 +36,7 @@ namespace TaskManager.UnitTests
         {
             var taskManager = TaskManagerFactory.CreateTaskManager();
 
-            for (var i = 0; i < TaskManagerFactory.BuildTimeTaskManagerSize; i++)
+            for (var i = 0; i < TaskManagerFactory.TaskManagerSize; i++)
                 taskManager.Add(new ProcessDto(Priority.Low));
 
             var isAdded = taskManager.Add(new ProcessDto(Priority.Low));

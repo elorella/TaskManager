@@ -9,47 +9,47 @@ namespace TaskManager.UI
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hi, this is task manager!");
-
-            //Task manager size will be set in build time. 
-            //Console.WriteLine("Task manager size : ");
-            //var limitStr = Console.ReadLine();
-            //int.TryParse(limitStr, out int limit);
-
-            Console.WriteLine("Please select Customer Type: D for Default/ F for Fifo / P for Priority ");
-            var customerType = Console.ReadLine();
-
-            var taskManager = TaskManagerFactory.CreateTaskManager(customerType);
-
-
-            PrintMenu();
-            var command = Console.ReadLine();
-
-            while (command != "E" && command != "e")
+            Console.WriteLine("Hi, this is the task manager!");
+            
+            try
             {
-                if (command == "A" || command == "a")
-                {
-                    NewProcess(taskManager);
-                }
-                else if (command == "L" || command == "l")
-                {
-                    ListProcesses(taskManager);
-                }
-                else if (command == "K" || command == "k")
-                {
-                    KillProcess(taskManager);
-                }
-                else
-                {
-                    Console.WriteLine("Wrong command.");
-                }
+                Console.WriteLine("Please select Customer Type: F for Fifo / P for Priority / D for Default");
+                var customerType = Console.ReadLine();
+                var taskManager = TaskManagerFactory.CreateTaskManager(customerType);
+
 
                 PrintMenu();
-                command = Console.ReadLine();
-            }
+                var command = Console.ReadLine()?.ToUpper();
 
-            Console.WriteLine("Bye!");
-            Environment.Exit(0);
+                while (command != "E")
+                {
+                    switch (command)
+                    {
+                        case "A":
+                            NewProcess(taskManager);
+                            break;
+                        case "L":
+                            ListProcesses(taskManager);
+                            break;
+                        case "K":
+                            KillProcess(taskManager);
+                            break;
+                        default:
+                            Console.WriteLine("Wrong command.");
+                            break;
+                    }
+
+                    PrintMenu();
+                    command = Console.ReadLine();
+                }
+
+                Console.WriteLine("Bye!");
+                Environment.Exit(0);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private static void KillProcess(ITaskManager taskManager)
@@ -78,25 +78,35 @@ namespace TaskManager.UI
         private static void ListProcesses(ITaskManager taskManager)
         {
             var processList = taskManager.List(process => process.CreateDate);
-            processList.ToList().ForEach(k => Console.WriteLine(k.Print()));
+            processList.ToList().ForEach(k => Console.WriteLine(k.ToString()));
         }
 
         private static void NewProcess(ITaskManager taskManager)
         {
             Console.WriteLine("Please select priority : 1 for Low / 2 for Medium / 3 for High");
             var priorityStr = Console.ReadLine();
-            
-            if (int.TryParse(priorityStr, out int priorityId) && Enum.IsDefined(typeof(Priority), priorityId))
+
+            if (ValidateEnumInput(priorityStr))
             {
-                var newProcess = taskManager.Add(new ProcessDto((Priority)priorityId));
-                Console.WriteLine((newProcess != null)
-                    ? $"New process added. {newProcess.Print()}"
-                    : "Task manager is full.Process can't be added.");
+                var priorityId = int.Parse(priorityStr);
+                var newProcess = taskManager.Add(new ProcessDto((Priority) priorityId));
+                var outputMessage = newProcess != null
+                    ? $"New process added. {newProcess.ToString()}"
+                    : "Task manager is full.Process can't be added.";
+                Console.WriteLine(outputMessage);
             }
             else
             {
                 Console.WriteLine("Invalid value for priority.");
             }
+        }
+
+        private static bool ValidateEnumInput(string priorityStr)
+        {
+            if (string.IsNullOrWhiteSpace(priorityStr))
+                return false;
+
+            return int.TryParse(priorityStr, out var priorityId) && Enum.IsDefined(typeof(Priority), priorityId);
         }
 
         private static void PrintMenu()

@@ -8,7 +8,7 @@ namespace TaskManager
         {
         }
 
-        public override bool CanBeAdded(Process process)
+        public override bool TryAddOverflow(Process process)
         {
             return false;
         }

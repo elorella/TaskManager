@@ -2,12 +2,12 @@
 {
     public class TaskManagerFactory
     {
-        public const int BuildTimeTaskManagerSize = 5;
+        public const int TaskManagerSize = 5;
 
-        public static ITaskManager CreateTaskManager(string customer = default, int taskManagerSize = BuildTimeTaskManagerSize)
+        public static ITaskManager CreateTaskManager(string customer = default, int taskManagerSize = TaskManagerSize)
         {
-            if (taskManagerSize < 0)
-                taskManagerSize = BuildTimeTaskManagerSize;
+            if (taskManagerSize < 1)
+                taskManagerSize = TaskManagerSize;
 
             ITaskManager taskManager = null;
             switch (customer)

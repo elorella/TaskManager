@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using TaskManager.Entity;
 using TaskManager.Factory;
@@ -35,7 +33,7 @@ namespace TaskManager.UnitTests
 
             var pMedium = taskManager.Add(new ProcessDto(Priority.Medium));
 
-            var items = taskManager.List(m=>m.Priority).ToList();
+            var items = taskManager.List(m => m.Priority).ToList();
             Assert.Equal(items[0].PID, pLow.PID);
             Assert.Equal(items[1].PID, pMedium.PID);
             Assert.Equal(items[2].PID, pHigh.PID);
@@ -45,7 +43,7 @@ namespace TaskManager.UnitTests
         public void TaskListShouldBeOrderedByPid()
         {
             var taskManager = TaskManagerFactory.CreateTaskManager();
-            
+
             var p1 = taskManager.Add(new ProcessDto(Priority.Low));
 
             var p2 = taskManager.Add(new ProcessDto(Priority.High));
@@ -59,7 +57,6 @@ namespace TaskManager.UnitTests
             Assert.Equal(items[1].PID, p2.PID);
             Assert.Equal(items[2].PID, p3.PID);
             Assert.Equal(items[3].PID, p4.PID);
-
         }
 
 
@@ -82,11 +79,11 @@ namespace TaskManager.UnitTests
             var taskManager = TaskManagerFactory.CreateTaskManager(taskManagerSize: 2);
             var process = taskManager.Add(new ProcessDto(Priority.Low));
 
-            var killed = taskManager.Kill(process.PID); 
+            var killed = taskManager.Kill(process.PID);
             Assert.True(killed);
 
             var processlist = taskManager.List();
-            Assert.Null(processlist.FirstOrDefault(m=>m.PID == process.PID));
+            Assert.Null(processlist.FirstOrDefault(m => m.PID == process.PID));
         }
 
         [InlineData(Priority.High)]
@@ -109,6 +106,25 @@ namespace TaskManager.UnitTests
 
             var processlist = taskManager.List();
             Assert.Null(processlist.FirstOrDefault(m => m.Priority == priority));
+        }
+
+        [Fact(DisplayName = "KillAll should remove all the task from task manager.")]
+        private void KillAllShouldRemoveAllTheTaskFromTaskManager()
+        {
+            var taskManager = TaskManagerFactory.CreateTaskManager(taskManagerSize: 6);
+
+            taskManager.Add(new ProcessDto(Priority.Low));
+            taskManager.Add(new ProcessDto(Priority.Low));
+            taskManager.Add(new ProcessDto(Priority.Medium));
+            taskManager.Add(new ProcessDto(Priority.Medium));
+            taskManager.Add(new ProcessDto(Priority.High));
+            taskManager.Add(new ProcessDto(Priority.High));
+
+            var killed = taskManager.KillAll();
+            Assert.True(killed);
+
+            var processlist = taskManager.List();
+            Assert.False(processlist.Any());
         }
     }
 }

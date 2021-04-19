@@ -9,7 +9,7 @@ namespace TaskManager
         {
         }
 
-        public override bool CanBeAdded(Process process)
+        public override bool TryAddOverflow(Process process)
         {
             var oldestProcess = ProcessList.OrderBy(m => m.CreateDate).First();
             Kill(oldestProcess.PID);
