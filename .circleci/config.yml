@@ -27,7 +27,7 @@
           name: "Print Working Directory"
           command: pwd
       - store_artifacts:
-          path: C:\Users\circleci\project\test_coverage
+          path: test_coverage
   build:
     description: Build application with Release configuration
     executor:
@@ -38,6 +38,9 @@
           name: "Build Application according to some given configuration"
           #command: dotnet.exe build --configuration Release
           command: dotnet.exe publish -c Release -r win10-x64
+      - run: 
+          name: "Create Artifact folder"
+          command :  New-Item -force -Path  "C:\Users\circleci\project\TaskManager" -Name "Artifact" -ItemType "directory"
       - run: 
           name: "Cleanup artifatcs"
           command :  Remove-Item C:\Users\circleci\project\TaskManager\Artifact\*.*
