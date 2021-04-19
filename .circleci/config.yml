@@ -23,9 +23,9 @@
       - run:
           name: "Run Application Tests"
           command: dotnet.exe test -v n --results-directory:test_coverage --collect:"Code Coverage"
-      #- run:
-      #    name: "Print Working Directory"
-      #    command: pwd
+      - run:
+          name: "Print Working Directory"
+          command: pwd
       #- store_artifacts:
       #    path: test_coverage
   build:
@@ -47,7 +47,7 @@
       - run:
           name: Compress Artifacts
           #command: tar -cvzf TaskManager.tar.xz C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish
-          command: Expand-Archive TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish -DestinationPath TaskManager\Artifact\Artifact.zip
+          command: Expand-Archive C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\ -DestinationPath TaskManager\Artifact\Artifact.zip
       - store_artifacts:
           path: TaskManager\Artifact\Artifact.zip
           #destination: TaskManager
