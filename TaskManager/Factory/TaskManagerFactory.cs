@@ -9,7 +9,7 @@
             if (taskManagerSize < 1)
                 taskManagerSize = TaskManagerSize;
 
-            ITaskManager taskManager = null;
+            ITaskManager taskManager;
             switch (customer)
             {
                 case "F":

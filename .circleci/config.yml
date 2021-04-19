@@ -46,8 +46,7 @@
           command :  Remove-Item C:\Users\circleci\project\TaskManager\Artifact\*.*
       - run:
           name: Compress Artifacts
-          #command: tar -cvzf TaskManager.tar.xz C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish
-          command: Compress-Archive C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish -DestinationPath TaskManager\Artifact\Artifact.zip
+          command: Compress-Archive C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win-x64\publish -DestinationPath TaskManager\Artifact\Artifact.zip
       - store_artifacts:
           path: TaskManager\Artifact\Artifact.zip
           #destination: TaskManager
