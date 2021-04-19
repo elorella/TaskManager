@@ -38,11 +38,15 @@
           name: "Build Application according to some given configuration"
           #command: dotnet.exe build --configuration Release
           command: dotnet.exe publish -c Release -r win10-x64
+      - run: 
+          name: "Cleanup artifatcs"
+          command :  Remove-Item C:\Users\circleci\project\TaskManager\Artifact\*.*
       - run:
           name: Compress Artifacts
-          command: tar -cvzf TaskManager.tar.xz C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish
+          #command: tar -cvzf TaskManager.tar.xz C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish
+          command: Expand-Archive C:\Users\circleci\project\TaskManager\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish\a.zip -DestinationPath C:\Users\circleci\project\TaskManager\Artifact\Artifact.zip
       - store_artifacts:
-          path: TaskManager.tar.xz
+          path: TaskManager\Artifact\Artifact.zip
           #destination: TaskManager
 
  workflows:
