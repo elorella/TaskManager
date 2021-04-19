@@ -1,0 +1,61 @@
+ version: 2.1
+
+ orbs:
+  win: circleci/windows@2.2.0
+ jobs:
+  test:
+    description: Setup and run application tests
+    executor:
+      name: win/default
+      shell: powershell.exe
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dotnet-packages-v1-{{ checksum "TaskManager/TaskManager.csproj" }}
+      - run:
+          name: "Install project dependencies"
+          command: dotnet.exe restore
+      - save_cache:
+          paths:
+            - C:\Users\circleci\.nuget\packages
+          key: dotnet-packages-v1-{{ checksum "TaskManager/TaskManager.csproj" }}
+      - run:
+          name: "Run Application Tests"
+          command: dotnet.exe test -v n --results-directory:test_coverage --collect:"Code Coverage"
+      - run:
+          name: "Print Working Directory"
+          command: pwd
+      #- store_artifacts:
+      #    path: test_coverage
+  build:
+    description: Build application with Release configuration
+    executor:
+      name: win/default
+    steps:
+      - checkout
+      - run:
+          name: "Build Application according to some given configuration"
+          #command: dotnet.exe build --configuration Release
+          command: dotnet.exe publish -c Release -r win10-x64
+      - run: 
+          name: "Create Artifact folder"
+          command :  New-Item -force -Path  "C:\Users\circleci\project\TaskManager" -Name "Artifact" -ItemType "directory"
+      - run: 
+          name: "Cleanup artifatcs"
+          command :  Remove-Item C:\Users\circleci\project\TaskManager\Artifact\*.*
+      - run:
+          name: Compress Artifacts
+          #command: tar -cvzf TaskManager.tar.xz C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish
+          command: Compress-Archive C:\Users\circleci\project\TaskManager.UI\bin\Release\netcoreapp3.1\win10-x64\publish -DestinationPath TaskManager\Artifact\Artifact.zip
+      - store_artifacts:
+          path: TaskManager\Artifact\Artifact.zip
+          #destination: TaskManager
+
+ workflows:
+  test_and_build:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test   
