@@ -1,6 +1,6 @@
 # TaskManager
 
-**Problem:* : This is a console application to simulate how a task  Task manager is the component that is designed for handling multiple processes inside an operating system. Each process is identified by 2 fields, a unique unmodifiable identifier (PID), and a priority (low, medium, high).
+**Problem:** : This is a console application to simulate how a task  Task manager is the component that is designed for handling multiple processes inside an operating system. Each process is identified by 2 fields, a unique unmodifiable identifier (PID), and a priority (low, medium, high).
 The process is immutable, it is generated with a priority and will die with this priority – each process has a kill() method that will destroy it. 
 Depending on the customer adding a new process to task manager behaviour will change. 
 
